@@ -19,16 +19,25 @@ type Book {
 type Auth {
     token: ID
     user: User
-  }
+}
 type Query {
     me: User
 }
 
+input BookInput {
+    bookId: ID!
+    authors: [String]
+    description: String
+    image: String
+    link: String
+    title: String!
+}
+
 type Mutation {
-login(email: String!, password: String!): Auth
-addUser(username: String!, email: String!, password: String!): Auth
-saveBook(input: BookInput!): User
-removeBook(bookId): User
+    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
+    saveBook(input: BookInput!): User
+    removeBook(bookId: ID!): User
 }
 `;
 
