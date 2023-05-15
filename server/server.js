@@ -1,19 +1,15 @@
 const express = require('express');
-
 const { ApolloServer } = require('apollo-server-express');
-
 const path = require('path');
 const db = require('./config/connection');
-
 const PORT = process.env.PORT || 3001;
 const app = express();
-const server = new ApolloServer
-  ({
-    typeDefs,
-    resolvers,
-  });
 
-
+const { typeDefs, resolvers } = require('./schemas');
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -27,8 +23,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-const startApolloServer = async (typeDefs, resolvers) => { 
-  await server.start();
+const startApolloServer = async (typeDefs, resolvers) => {
+  await server.start()
   server.applyMiddleware({ app });
   db.once('open', () => {
     app.listen(PORT, () => {

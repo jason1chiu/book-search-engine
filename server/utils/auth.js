@@ -17,24 +17,20 @@ module.exports = {
     }
 
     if (!token) {
-      return res.status(400).json({ message: 'You have no token!' });
+      throw new Error('You have no token!');
     }
 
-    // verify token and get user data out of it
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
     } catch {
       console.log('Invalid token');
-      return res.status(400).json({ message: 'invalid token!' });
+      throw new Error('Invalid token!');
     }
 
-    // send to next endpoint
-    // next(); ORIGINAL CODE
-
     return req;
-
   },
+
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
 
