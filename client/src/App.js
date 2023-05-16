@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
@@ -9,6 +10,9 @@ import Navbar from './components/Navbar';
 const client = new ApolloClient({
   uri: '/graphql',
   cache: new InMemoryCache(),
+  headers: {
+    authorization: localStorage.getItem('id_token') ? `Bearer ${localStorage.getItem('id_token')}` : "",
+  },
 });
 
 function App() {
@@ -18,15 +22,15 @@ function App() {
         <>
           <Navbar />
           <Routes>
-            <Route 
-              path='/' 
-              element={<SearchBooks />} 
+            <Route
+              path='/'
+              element={<SearchBooks />}
             />
-            <Route 
-              path='/saved' 
-              element={<SavedBooks />} 
+            <Route
+              path='/saved'
+              element={<SavedBooks />}
             />
-            <Route 
+            <Route
               path='*'
               element={<h1 className='display-2'>Wrong page!</h1>}
             />
